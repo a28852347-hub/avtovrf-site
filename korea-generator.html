@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<link href="favicon.ico" rel="icon" sizes="any"/>
+<link href="favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="favicon-48.png" rel="icon" sizes="48x48" type="image/png"/>
+<link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<meta charset="utf-8"/>
+<meta content="noindex,nofollow" name="robots"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Генератор КП — Авто в РФ</title>
+<style>
+:root{--red:#d6a21a;--red2:#e2b33c;--red3:#8a6a0d;--txt:#2b2f34;--mut:#54595f;--line:#dfe3ea}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Manrope',Arial,sans-serif;color:var(--txt);line-height:1.6;background:#f4f5f6}
+a{text-decoration:none}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+header{background:#2b2f34;color:#fff;padding:22px 0}
+header .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo{font-family:'Unbounded',Arial,sans-serif;font-weight:900;font-size:20px}
+.logo b{color:var(--red2)}
+h1{font-family:'Unbounded',Arial,sans-serif;font-size:22px;margin:28px 0 6px}
+.kick{font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--red);font-size:11px}
+.mut{color:var(--mut);font-size:13.5px;margin-bottom:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:22px}
+label{display:block;font:700 12px 'Manrope';color:var(--mut);letter-spacing:1px;text-transform:uppercase;margin:14px 0 5px}
+input,textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;font:600 15px 'Manrope';color:var(--txt);outline:none}
+input:focus,textarea:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:64px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn{display:block;width:100%;text-align:center;font:800 16px 'Manrope';color:#fff;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#e2b33c,#d6a21a 50%,#8a6a0d);cursor:pointer;margin-top:20px}
+#result{display:none;margin-bottom:40px}
+#result.show{display:block}
+.kp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:28px}
+.kp h2{font-family:'Unbounded',Arial,sans-serif;font-size:20px;margin:6px 0 12px}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+td{padding:10px 12px;border-bottom:1px solid var(--line);font-size:14px}
+td:first-child{color:var(--mut);width:45%}
+td:last-child{font-weight:600}
+.calc{background:#fdf6e0;border:1.5px solid #ecd9a0;border-radius:14px;padding:18px}
+.calc-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #e3d3a8;font-size:14.5px}
+.calc-row.total{border:none;font-size:18px;font-weight:900;color:#8a6a0d;padding-top:12px}
+.cont{background:#2b2f34;color:#fff;border-radius:14px;padding:22px;text-align:center;margin-top:18px;font-size:14px}
+.cont b{color:var(--red2);font-size:18px;display:block;margin:6px 0}
+@media(max-width:600px){.row2{grid-template-columns:1fr}}
+@media print{header,.noprint{display:none!important}body{background:#fff}.kp{border:none}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="logo">АВТО <b>В РФ</b></div>
+<div>Генератор коммерческих предложений</div>
+</div></header>
+<div class="wrap">
+<div class="kick">Для менеджеров</div>
+<h1>КП на авто из Кореи за 2 минуты</h1>
+<p class="mut">Заполните форму — получите готовое КП. Отправьте клиенту скриншот или PDF (кнопка «Печать»).</p>
+<div class="card">
+<label>Модель и версия</label>
+<input id="f_model" value="Hyundai Avante (Elantra) CN7 1.6 Modern"/>
+<div class="row2">
+<div><label>Год выпуска</label><input id="f_year" value="12.2021"/></div>
+<div><label>Пробег, км</label><input id="f_km" value="109 323"/></div>
+</div>
+<label>Комплектация</label>
+<textarea id="f_comp">Кожаный салон, вентиляция сидений, Hyundai SmartSense, навигация, камера заднего вида, парктроники, умный ключ, климат-контроль</textarea>
+<div class="row2">
+<div><label>ID объявления Encar</label><input id="f_id" value="42559864"/></div>
+<div><label>Цена в вонах (₩)</label><input id="f_krw" type="number" value="13900000"/></div>
+</div>
+<div class="row2">
+<div><label>Курс ₽ за 1 ₩</label><input id="f_rate" step="0.01" type="number" value="0.068"/></div>
+<div><label>Пошлина, ₽</label><input id="f_duty" type="number" value="350000"/></div>
+</div>
+<div class="row2">
+<div><label>Утильсбор, ₽</label><input id="f_util" type="number" value="5200"/></div>
+<div><label>Доставка + оформление, ₽</label><input id="f_deliv" type="number" value="230000"/></div>
+</div>
+<button class="btn" onclick="build()">Сформировать КП</button>
+</div>
+<div id="result">
+<div class="kp" id="kp"></div>
+<button class="btn noprint" onclick="window.print()">Печать / сохранить PDF</button>
+</div>
+</div>
+<script>
+function build(){
+  var v = function(id){ return document.getElementById(id).value.trim(); };
+  var num = function(id){ return parseFloat(v(id))||0; };
+  var fmt = function(n){ return Math.round(n).toLocaleString('ru-RU'); };
+  var carRub = num('f_krw') * num('f_rate');
+  var duty = num('f_duty'), util = num('f_util'), deliv = num('f_deliv');
+  var total = carRub + duty + util + deliv;
+
+  document.getElementById('kp').innerHTML =
+    '<div class="kick">Коммерческое предложение · Encar</div>' +
+    '<h2>' + v('f_model') + '</h2>' +
+    '<p style="color:#54595f;font-size:14px">Автомобиль с корейской площадки Encar' + (v('f_id') ? ' (ID ' + v('f_id') + ')' : '') + '. Доставка 3–5 недель, оформление под ключ.</p>' +
+    '<table>' +
+    '<tr><td>Год выпуска</td><td>' + v('f_year') + '</td></tr>' +
+    '<tr><td>Пробег</td><td>' + v('f_km') + ' км</td></tr>' +
+    '<tr><td>Комплектация</td><td>' + v('f_comp') + '</td></tr>' +
+    '</table>' +
+    '<div class="calc">' +
+    '<div class="calc-row"><span>Автомобиль (' + fmt(num('f_krw')) + ' ₩ × ' + num('f_rate') + ' ₽)</span><b>' + fmt(carRub) + ' ₽</b></div>' +
+    '<div class="calc-row"><span>Пошлина</span><b>' + fmt(duty) + ' ₽</b></div>' +
+    '<div class="calc-row"><span>Утильсбор</span><b>' + fmt(util) + ' ₽</b></div>' +
+    '<div class="calc-row"><span>Доставка, СБКТС, ЭРА-ГЛОНАСС, брокер</span><b>' + fmt(deliv) + ' ₽</b></div>' +
+    '<div class="calc-row total"><span>ИТОГО «ПОД КЛЮЧ»</span><span>' + fmt(total) + ' ₽</span></div>' +
+    '</div>' +
+    '<div class="cont">ООО «Склад машин» · автоврф.рф<b>+7 918 458-90-18</b>Алексей · Иван +7 965 455-24-83<br>хутор Трудобеликовский, ул. Ленина, 217</div>';
+
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

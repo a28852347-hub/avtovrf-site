@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<link href="favicon.ico" rel="icon" sizes="any"/>
+<link href="favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="favicon-48.png" rel="icon" sizes="48x48" type="image/png"/>
+<link href="apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Авто из Кореи под заказ с Encar — Авто в РФ</title>
+<meta content="Привезём любой автомобиль с корейской площадки Encar за 3–5 недель. Пришлите ссылку на объявление — посчитаем стоимость под ключ за 1 час. Компания «Спец-склад», с 1991 года." name="description"/>
+<style>
+:root{--red:#d6a21a;--red2:#e2b33c;--red3:#8a6a0d;--dark:#ffffff;--dark2:#f4f5f6;--card:#ffffff;--txt:#2b2f34;--mut:#54595f;--line:#dfe3ea}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--dark);color:var(--txt);font-family:'Manrope',Arial,sans-serif;line-height:1.6}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+header{background:#2b2f34;color:#fff;padding:26px 0}
+.head-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.logo{font-family:'Unbounded',Arial,sans-serif;font-weight:900;font-size:24px}
+.logo b{color:var(--red2)}
+.head-phone{font-weight:800;font-size:18px;background:linear-gradient(135deg,#e2b33c,#d6a21a 50%,#8a6a0d);color:#fff;padding:12px 24px;border-radius:30px}
+h1{font-family:'Unbounded',Arial,sans-serif;font-size:clamp(24px,4.5vw,40px);line-height:1.15;margin:40px 0 14px}
+.sub{color:var(--mut);font-size:17px;max-width:640px;margin-bottom:30px}
+.kicker{font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-size:13px}
+section{padding:44px 0}
+h2{font-family:'Unbounded',Arial,sans-serif;font-size:clamp(20px,3vw,28px);margin:10px 0 24px}
+.cta-big{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 26px}
+.cta-big a{flex:1;min-width:260px;text-align:center;font-weight:800;font-size:16px;color:#fff;padding:17px 20px;border-radius:14px}
+.cta-wa{background:linear-gradient(135deg,#25D366,#128C7E)}
+.cta-tg{background:linear-gradient(135deg,#2AABEE,#229ED9)}
+.cta-call{background:linear-gradient(135deg,#e2b33c,#d6a21a 50%,#8a6a0d)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;counter-reset:s}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;position:relative}
+.step::before{counter-increment:s;content:counter(s);display:inline-flex;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#e2b33c,#d6a21a);color:#fff;font-weight:900;align-items:center;justify-content:center;margin-bottom:12px}
+.step b{display:block;margin-bottom:4px}
+.step p{color:var(--mut);font-size:13px}
+.plus{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.pl{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--red);border-radius:12px;padding:18px 20px}
+.pl b{display:block;margin-bottom:6px}
+.pl p{color:var(--mut);font-size:14px}
+.calc{background:var(--dark2);border:1px solid var(--line);border-radius:18px;padding:28px}
+.calc h3{font-family:'Unbounded',Arial,sans-serif;font-size:19px;margin-bottom:14px}
+.calc p{color:var(--mut);font-size:15px;margin-bottom:8px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.faq summary{cursor:pointer;padding:18px 22px;font-weight:700;font-size:16px;list-style:none;padding-right:50px;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:22px;font-weight:800;color:var(--red)}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details p{padding:0 22px 18px;color:var(--mut);font-size:15px}
+.contacts{background:#2b2f34;color:#fff;border-radius:20px;padding:34px;text-align:center}
+.contacts h2{margin-top:0}
+.contacts .phone{font-family:'Unbounded',Arial,sans-serif;font-size:clamp(20px,4vw,32px);color:var(--red2);display:block;margin:16px 0}
+.mgr{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.mgr a{background:linear-gradient(135deg,#e2b33c,#d6a21a 50%,#8a6a0d);color:#fff;font-weight:800;padding:12px 22px;border-radius:12px}
+.small{color:#a9b1bf;font-size:13px;margin-top:18px;line-height:1.8}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:26px 0}
+@media(max-width:640px){section{padding:32px 0}.cta-big a{min-width:100%}}
+@media print{header,.cta-big,.head-phone{background:#fff!important;color:#000!important;border:1px solid #ccc}body{font-size:12px}section{padding:22px 0}.contacts{background:#fff;color:#000;border:2px solid #d6a21a}.contacts .phone{color:#8a6a0d}}
+</style>
+</head>
+<body>
+<header><div class="wrap head-in">
+<div class="logo">АВТО <b>В РФ</b></div>
+<div>Авто из Кореи под заказ</div>
+<a class="head-phone" href="tel:+79184589018">+7 918 458-90-18</a>
+</div></header>
+<div class="wrap">
+<div class="kicker">Под заказ · Encar · 3–5 недель</div>
+<h1>Любой автомобиль из Кореи — привезём под ключ</h1>
+<p class="sub">Работаем с крупнейшей корейской площадкой Encar: у каждой машины открытая страховая история и фото реального состояния. Вы выбираете — мы считаем, покупаем, доставляем и оформляем.</p>
+<div class="cta-big">
+<a class="cta-wa" href="https://wa.me/79184589018?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%9D%D0%B0%D1%88%D1%91%D0%BB%20%D0%B0%D0%B2%D1%82%D0%BE%20%D0%BD%D0%B0%20Encar%2C%20%D0%BF%D0%BE%D1%81%D1%87%D0%B8%D1%82%D0%B0%D0%B9%D1%82%D0%B5%20%D0%BF%D0%BE%D0%B4%20%D0%BA%D0%BB%D1%8E%D1%87%3A%20" rel="noopener" target="_blank">Прислать ссылку на Encar в WhatsApp</a>
+<a class="cta-tg" href="https://t.me/+79184589018" rel="noopener" target="_blank">Прислать ссылку в Telegram</a>
+</div>
+<section>
+<div class="kicker">Процесс</div>
+<h2>Как это работает</h2>
+<div class="steps">
+<div class="step"><b>Выбираете авто</b><p>На encar.com — фильтры по марке, году, пробегу и цене. Браузер переведёт страницу на русский.</p></div>
+<div class="step"><b>Присылаете ссылку</b><p>Просто скопируйте адрес объявления и отправьте нам в WhatsApp или Telegram.</p></div>
+<div class="step"><b>Считаем за 1 час</b><p>Цена в вонах по курсу + пошлина + утильсбор + доставка + оформление. Фиксируем сроки.</p></div>
+<div class="step"><b>Договор и доставка</b><p>Оформляем документы, привозим за 3–5 недель. Вы получаете ключи на базе в Трудобеликовском.</p></div>
+</div>
+</section>
+<section>
+<div class="kicker">Почему Корея</div>
+<h2>Плюсы корейских автомобилей</h2>
+<div class="plus">
+<div class="pl"><b>Страховая история</b><p>У каждой машины на Encar — официальная история страховых случаев. Скрыть ДТП невозможно.</p></div>
+<div class="pl"><b>Честный пробег</b><p>Корейский учёт пробега строгий — скрутить одометр почти нереально.</p></div>
+<div class="pl"><b>Состояние</b><p>Мягкий климат, качественные дороги, обязательное ТО — машины живые, без ржавчины.</p></div>
+<div class="pl"><b>Выгода</b><p>Цена с учётом всех расходов часто ниже российского рынка на 100–300 тыс. ₽.</p></div>
+</div>
+</section>
+<section>
+<div class="calc">
+<h3>Пример расчёта «под ключ»</h3>
+<p>Берём ссылку на понравившийся автомобиль на Encar и считаем: цена авто по курсу → пошлина и утильсбор (в нашем калькуляторе на сайте) → доставка, СБКТС, брокер.</p>
+<p>Расчёт бесплатный и ни к чему не обязывает. Отправьте ссылку — вернёмся с цифрами в течение часа в рабочее время.</p>
+<div class="cta-big" style="margin-top:18px">
+<a class="cta-call" href="tel:+79184589018">Посчитать по телефону: +7 918 458-90-18</a>
+</div>
+</div>
+</section>
+<section>
+<div class="kicker">Живой пример</div>
+<h2>Как выглядит реальный расчёт</h2>
+<div class="calc">
+<h3>Hyundai Avante (Elantra) CN7 1.6 Modern — с Encar, ID 42559864</h3>
+<p><b>Год:</b> 12.2021 · <b>Пробег:</b> 109 323 км · <b>Топливо:</b> бензин · <b>Город:</b> Тэджон, Корея</p>
+<p><b>Комплектация:</b> кожаный салон, вентиляция сидений, Hyundai SmartSense, навигация, камера заднего вида, парктроники, умный ключ, автосвет, климат-контроль. Пройден обязательный осмотр, остаток заводской гарантии.</p>
+<div style="border-top:1px solid #dfe3ea;margin:16px 0"></div>
+<p>1️⃣ Цена автомобиля на Encar — по курсу вона в рублях на день расчёта<br/>
+      2️⃣ + Пошлина и утильсбор (по возрасту и объёму — считаем в калькуляторе на сайте)<br/>
+      3️⃣ + Доставка контейнером, СБКТС, ЭРА-ГЛОНАСС, брокер<br/>
+      4️⃣ = <b>Итог «под ключ» — фиксируем вам в течение часа</b></p>
+<p>Точную цифру по этой машине получите у менеджера — курс и ставки обновляются ежедневно. <a href="https://fem.encar.com/cars/detail/42559864" rel="noopener" style="color:#8a6a0d;font-weight:700" target="_blank">Открыть объявление на Encar →</a></p>
+<div class="cta-big" style="margin-top:18px">
+<a class="cta-wa" href="https://wa.me/79184589018?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20Hyundai%20Avante%20(CN7)%20%D1%81%20Encar%2C%20ID%2042559864%20%E2%80%94%20%D0%BF%D0%BE%D1%81%D1%87%D0%B8%D1%82%D0%B0%D0%B9%D1%82%D0%B5%20%D0%BF%D0%BE%D0%B4%20%D0%BA%D0%BB%D1%8E%D1%87" rel="noopener" target="_blank">Посчитать этот Avante в WhatsApp</a>
+<a class="cta-call" href="tel:+79184589018">По телефону: +7 918 458-90-18</a>
+</div>
+</div>
+</section>
+<section class="faq">
+<div class="kicker">FAQ</div>
+<h2>Частые вопросы</h2>
+<details><summary>Encar открывается у меня на корейском. Как выбрать машину?</summary><p>Откройте сайт в Chrome — он предложит перевести страницу автоматически. Либо пришлите нам желаемые параметры (марка, модель, бюджет) — подберём сами и пришлём варианты со ссылками.</p></details>
+<details><summary>Сколько ждать доставку?</summary><p>Обычно 3–5 недель с момента покупки: покупка на аукционе/площадке, погрузка в контейнер, море, таможня, доставка на базу.</p></details>
+<details><summary>Что будет, если машина на месте окажется хуже, чем на фото?</summary><p>Перед покупкой проверяем историю и состояние по корейским базам. Если на этапе осмотра в Корее находим серьёзные несоответствия — сообщаем и решаем: замена или возврат средств.</p></details>
+<details><summary>Можно ли в кредит?</summary><p>Кредитный калькулятор работает на сайте. Банки-партнёры на стадии согласования — точные условия уточняйте у менеджера.</p></details>
+<details><summary>Какая предоплата?</summary><p>Условия обсуждаются индивидуально и фиксируются в договоре. Звоните — расскажем честно, без мелкого шрифта.</p></details>
+</section>
+<section>
+<div class="contacts">
+<div class="kicker" style="color:#e2b33c">Контакты</div>
+<h2>Отправьте ссылку — посчитаем за час</h2>
+<a class="phone" href="tel:+79184589018">+7 918 458-90-18</a>
+<div class="mgr">
+<a href="tel:+79184589018">Алексей</a>
+<a href="tel:+79654552483">Иван · +7 965 455-24-83</a>
+</div>
+<p class="small">хутор Трудобеликовский, ул. Ленина, 217 · Краснодарский край<br/>
+      Будние дни 8:00–17:00 · Выходные — по договорённости<br/>
+      Приём заказов: +7 918 111-15-23 · Документы: +7 918 051-15-11 · Надежда: +7 918 640-55-79</p>
+</div>
+</section>
+</div>
+<footer>© 2026 Авто в РФ · автоврф.рф · Компания «Спец-склад» — на рынке с 1991 года</footer>
+</body>
+</html>

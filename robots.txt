@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /kp.html
+Disallow: /korea-kp.html
+Disallow: /china-kp.html
+Disallow: /japan-kp.html
+Disallow: /korea-generator.html
+Sitemap: https://xn--80aea1cljr.xn--p1ai/sitemap.xml

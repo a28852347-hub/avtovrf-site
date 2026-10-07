@@ -1,0 +1,16 @@
+АВТО В РФ — Telegram заявки
+
+В ZIP уже встроен _worker.js, поэтому Direct Upload через Cloudflare Dashboard поддерживается.
+
+После загрузки ZIP в Cloudflare Pages:
+1. Откройте проект → Settings → Variables and Secrets.
+2. Добавьте Secret: TELEGRAM_BOT_TOKEN = токен @AvtovRF_Zayavki_bot.
+3. Добавьте Secret/Variable: TELEGRAM_CHAT_ID = chat_id чата Алексея.
+4. Сохраните/Deploy.
+5. Отправьте тестовую заявку с сайта.
+
+Важно:
+- Токен бота НЕ находится в HTML/JS сайта.
+- Форма отправляет данные на /api/lead.
+- Если Telegram реально не подтвердил отправку, сайт НЕ показывает ложный успех.
+- При будущем переходе на Git/GitLab _worker.js можно оставить без изменений.
