@@ -24,9 +24,55 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
+function encarId(value){
+  try{const u=new URL(value);if(!['http:','https:'].includes(u.protocol)||!(u.hostname==='encar.com'||u.hostname.endsWith('.encar.com')))return null;const match=u.pathname.match(/\/(?:detail|vehicle|cars)\/(\d{6,12})(?:\/|$)/);const id=(match&&match[1])||u.searchParams.get('carid')||u.searchParams.get('carId')||u.searchParams.get('id');return /^\d{6,12}$/.test(id||'')?id:null;}catch(_){return null;}
+}
+function encarCar(payload){
+  const car=payload?.data?.vehicle||payload?.vehicle||payload?.data||payload;
+  if(!car||typeof car!=='object')return null;
+  const category=car.category||{},spec=car.spec||car.specification||{};
+  const value=(...xs)=>{for(const x of xs)if(typeof x==='string'||typeof x==='number'){const text=String(x).trim();if(text)return text.slice(0,250);}return '';};
+  const make=value(category.manufacturerEnglishName,category.manufacturerName,car.manufacturerName,car.manufacturer);
+  const model=value(category.modelEnglishName,category.modelName,car.modelName,car.model);
+  const name=value(car.vehicleName,car.title,[make,model].filter(Boolean).join(' '));
+  const trim=value(category.gradeEnglishName,category.gradeName,category.gradeDetailName,car.trim);
+  const year=value(category.year,category.formYear,spec.year,car.year);
+  const mileage=value(spec.mileage,car.mileage);
+  const fuels={'가솔린':'Бензин','디젤':'Дизель','전기':'Электро','가솔린+전기':'Бензин / электро','LPG(일반인 구입)':'LPG'};
+  const transmissions={'오토':'Автомат','자동':'Автомат','수동':'Механика'};
+  const fuel=value(spec.fuelName,spec.fuelTypeName,car.fuelName);
+  const transmission=value(spec.transmissionName,spec.transmissionTypeName,car.transmissionName);
+  const displacement=value(spec.displacement,car.displacement);
+  const engine=[displacement?displacement+' см³':'',fuels[fuel]||fuel,transmissions[transmission]||transmission].filter(Boolean).join(' · ');
+  const photos=Array.isArray(car.photos)?car.photos:Array.isArray(car.images)?car.images:[];
+  let photo=value(photos[0]?.path,photos[0]?.url,photos[0]);
+  if(photo.startsWith('/carpicture'))photo='https://ci.encar.com'+photo;
+  if(photo.startsWith('//'))photo='https:'+photo;
+  try{const u=new URL(photo);if(u.protocol!=='https:'||!(u.hostname==='encar.com'||u.hostname.endsWith('.encar.com')))photo='';}catch(_){photo='';}
+  if(!name)return null;
+  return {model:name,trim,year:year.match(/^(?:19|20)\d{2}/)?.[0]||year,mileage:mileage?mileage+' км':'',engine,photo};
+}
+async function importEncar(request){
+  if(request.method!=='GET')return json({ok:false,message:'Метод не поддерживается.'},405);
+  const url=new URL(request.url),source=url.searchParams.get('url')||'';
+  const id=encarId(source);
+  if(!id)return json({ok:false,message:'Укажите ссылку на конкретное объявление Encar.'},400);
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+  try{
+    const response=await fetch('https://api.encar.com/v1/readside/vehicle/'+id+'?include=MANAGE,SPEC,CONDITION,ADVERTISEMENT',{signal:controller.signal,redirect:'manual',headers:{'accept':'application/json'}});
+    if(!response.ok||!(response.headers.get('content-type')||'').includes('json'))return json({ok:false,message:'Encar сейчас не отдаёт данные автоматически. Откройте объявление и заполните характеристики и ссылку на фото вручную.'},502);
+    const data=encarCar(await response.json());
+    if(!data)return json({ok:false,message:'Encar не вернул характеристики этого объявления. Заполните поля вручную.'},502);
+    return json({ok:true,car:data});
+  }catch(error){return json({ok:false,message:error.name==='AbortError'?'Encar не ответил за 10 секунд. Попробуйте ещё раз или заполните поля вручную.':'Не удалось получить данные Encar. Заполните поля вручную.'},502);}
+  finally{clearTimeout(timer);}
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/encar") return importEncar(request);
 
     if (url.pathname === "/api/lead") {
       if (request.method !== "POST") {
@@ -106,3 +152,4 @@ export default {
     return env.ASSETS.fetch(request);
   }
 };
+
