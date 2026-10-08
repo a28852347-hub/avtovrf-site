@@ -1243,10 +1243,11 @@ window.submitLead = async function(){
     if(!res.ok || data.ok!==true) throw new Error(data.error||('HTTP_'+res.status));
     document.getElementById('modalForm').style.display='none';
     document.getElementById('modalSuccess').style.display='block';
+    var success=document.getElementById('modalSuccess');success.setAttribute('tabindex','-1');success.focus({preventScroll:true});success.scrollIntoView({behavior:'smooth',block:'start'});
   }catch(err){
     var text='Новая заявка с сайта\nИмя: '+payload.name+'\nТелефон: '+payload.phone+'\nАвто: '+(payload.car||'—')+'\nГород: '+(payload.city||'—')+'\nСтрана: '+(payload.country||'—')+'\nБюджет: '+(payload.budget||'—')+'\nСвязь: '+(payload.contact||'—');
     var status=document.getElementById('leadFallback');
-    if(!status){status=document.createElement('div');status.id='leadFallback';status.setAttribute('role','status');document.getElementById('modalForm').appendChild(status);}
+    if(!status){status=document.createElement('div');status.id='leadFallback';status.setAttribute('role','status');var sendButton=document.querySelector('#modalForm .btn-gold');if(sendButton)sendButton.insertAdjacentElement('afterend',status);else document.getElementById('modalForm').appendChild(status);}
     status.replaceChildren();
     var message=document.createElement('p');message.textContent='Автоматическая отправка недоступна. Передайте заявку менеджеру в Telegram: откройте чат и нажмите «Отправить».';
     var preview=document.createElement('textarea');preview.value=text;preview.readOnly=true;preview.rows=9;preview.style.width='100%';preview.setAttribute('aria-label','Текст заявки');
@@ -1255,6 +1256,10 @@ window.submitLead = async function(){
     var copy=document.createElement('button');copy.type='button';copy.className='btn-gold';copy.textContent='Скопировать заявку';
     copy.addEventListener('click',async function(){var copied=false;try{await navigator.clipboard.writeText(text);copied=true;}catch(_){preview.focus();preview.select();preview.setSelectionRange(0,text.length);try{copied=document.execCommand('copy');}catch(_){}}copy.textContent=copied?'Заявка скопирована':'Выделите и скопируйте текст выше';});
     status.append(message,preview,link,share,copy);
+    status.setAttribute('tabindex','-1');status.focus({preventScroll:true});status.scrollIntoView({behavior:'smooth',block:'start'});
+    try{if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(text).catch(function(){});}catch(_){}
+    window.location.href='tg://resolve?phone=79184589018&text='+encodeURIComponent(text);
+    setTimeout(function(){if(document.visibilityState==='visible')window.location.href=link.href;},2000);
   }finally{
     if(btn){btn.textContent=oldText;btn.disabled=false;}
   }
