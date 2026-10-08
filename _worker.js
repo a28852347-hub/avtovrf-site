@@ -72,6 +72,8 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
+    if(url.pathname==="/api/lead/status"&&request.method==="GET")return json({ready:!!(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)});
+
     if (url.pathname === "/api/encar") return importEncar(request);
 
     if (url.pathname === "/api/lead") {
@@ -111,6 +113,7 @@ export default {
       const contact = clean(payload.contact, 50) || "—";
       const page = clean(payload.page, 500) || "—";
 
+      const review=new URL(({Корея:"korea-kp.html",Китай:"china-kp.html",Япония:"japan-kp.html"})[country]||"korea-kp.html",url.origin);review.searchParams.set("request","1");if(car!=="—")review.searchParams.set("m",car);if(carUrl!=="—")review.searchParams.set("u",carUrl);
       const text =
         "<b>🚗 Новая заявка с сайта «АВТО В РФ»</b>\n\n" +
         "<b>Имя:</b> " + escapeHtml(name) + "\n" +
@@ -122,12 +125,14 @@ export default {
         "<b>Страна:</b> " + escapeHtml(country) + "\n" +
         "<b>Бюджет:</b> " + escapeHtml(budget) + "\n" +
         "<b>Удобная связь:</b> " + escapeHtml(contact) + "\n\n" +
-        "<b>Страница:</b> " + escapeHtml(page);
+        "<b>Страница:</b> " + escapeHtml(page)+"\n<b>Открыть для расчёта:</b> "+escapeHtml(review.href);
 
-      const tgRes = await fetch(
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+      let tgRes;try{tgRes = await fetch(
         "https://api.telegram.org/bot" + env.TELEGRAM_BOT_TOKEN + "/sendMessage",
         {
           method: "POST",
+          signal:controller.signal,
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
             chat_id: env.TELEGRAM_CHAT_ID,
@@ -138,6 +143,7 @@ export default {
         }
       );
 
+      }catch(_){return json({ok:false,error:"TELEGRAM_UNAVAILABLE"},502);}finally{clearTimeout(timer);}
       let tgData = {};
       try { tgData = await tgRes.json(); } catch {}
 
@@ -152,4 +158,5 @@ export default {
     return env.ASSETS.fetch(request);
   }
 };
+
 
