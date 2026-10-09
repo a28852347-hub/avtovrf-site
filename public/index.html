@@ -654,6 +654,13 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 #carGrid .catalog-price-footer{position:absolute;inset:auto 0 0;height:12.05%;background:#090909 url('/assets/catalog-template-gold-v1.jpg') center bottom/100% auto no-repeat;z-index:2}
 #carGrid .catalog-price-note{position:absolute;left:18%;bottom:3.8%;width:64%;height:4.8cqw;display:flex;align-items:center;justify-content:center;gap:1.25cqw;background:#070707;border:.18cqw solid #e7af00;border-radius:1.6cqw;transform:rotate(-4deg);transform-origin:center;color:#f2f2f2;z-index:3;box-sizing:border-box;font:650 2.55cqw/1 CatalogOswald,Arial,sans-serif;white-space:nowrap;letter-spacing:.02cqw}
 #carGrid .catalog-price-note svg{width:3.1cqw;height:3.1cqw;color:#ffc623;flex:none}
+
+/* Public editorial section; scoped to avoid catalog and form changes. */
+.useful-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.useful-card{display:flex;flex-direction:column;text-decoration:none;background:#fff;color:#282c30;border:1px solid #dedbd2;border-radius:20px;padding:28px;min-width:0}
+.useful-card:hover{border-color:#bc8d1c}.useful-card span{color:#9d771c;font-size:12px;font-weight:800}.useful-card h3{font-size:23px;line-height:1.25;margin:18px 0 14px}.useful-card p{font-size:15px;line-height:1.6;color:#62676c;margin:0 0 22px}.useful-card b{font-size:14px;margin-top:auto}.useful-actions{margin-top:26px;text-align:center}
+@media(max-width:900px){.useful-grid{grid-template-columns:1fr}.useful-card{padding:24px}}
+
 </style>
 <link href="https://xn--80aea1cljr.xn--p1ai/" rel="canonical"/><meta content="index,follow" name="robots"/></head>
 <body>
@@ -679,6 +686,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 </a>
 <nav class="nav-links">
 <a href="#cars">Каталог</a>
+<a href="/articles/">Полезное</a>
 <a href="korea.html">Под заказ</a>
 <a href="https://t.me/otzyvy_avto_v_rf" rel="noopener" target="_blank">Отзывы</a>
 <a href="#channels">Каналы</a>
@@ -860,6 +868,7 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 </div>
 </div>
 </section>
+<section id="useful"><div class="wrap"><div class="sec"><div class="kicker">Полезное</div><h2>Что знать перед покупкой</h2><div class="line"></div></div><div class="useful-grid"><a class="useful-card" href="/articles/stoimost-avto-pod-klyuch/"><span>Стоимость</span><h3>Сколько стоит привезти автомобиль под ключ</h3><p>Из чего складывается стоимость автомобиля из Кореи, Китая или Японии: покупка, доставка, оформление и расходы, которые стоит уточнить до заказа.</p><b>Читать статью ↗</b></a><a class="useful-card" href="/articles/encar-raschet-po-ssylke/"><span>Корея · Encar</span><h3>Как выбрать автомобиль на Encar и отправить на расчёт</h3><p>Что проверить в объявлении Encar, как скопировать ссылку и получить коммерческое предложение на привоз автомобиля из Кореи.</p><b>Читать статью ↗</b></a><a class="useful-card" href="/articles/etapy-privoza-avtomobilya/"><span>Покупка и доставка</span><h3>От заявки до выдачи: этапы привоза автомобиля</h3><p>Как проходит заказ автомобиля из Кореи, Китая или Японии: заявка, подбор, проверка, расчёт, покупка, доставка и получение машины.</p><b>Читать статью ↗</b></a></div><div class="useful-actions"><a class="btn-gold" href="/articles/">Все полезные материалы</a></div></div></section>
 <section id="contacts">
 <div class="wrap reveal">
 <div class="sec" style="margin-bottom:0"><div class="kicker">Контакты</div><h2>Свяжитесь с нами</h2><div class="line"></div></div>
@@ -1291,3 +1300,4 @@ document.addEventListener('click',function(e){
 </script>
 </body>
 </html>
+
