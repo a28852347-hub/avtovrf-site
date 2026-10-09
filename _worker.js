@@ -33,8 +33,9 @@ async function createProposal(request,env){
   if(!env.PROPOSALS)return json({ok:false,message:'Сохранение КП ещё не настроено.'},503);
   const text=await request.text();if(text.length>10000)return json({ok:false},413);
   let body;try{body=JSON.parse(text);}catch(_){return json({ok:false},400);}
+  if(!body||typeof body!=='object')return json({ok:false},400);
   if(body.pin!==String(env.PROPOSAL_MANAGER_PIN||'8888'))return json({ok:false,message:'Неверный PIN менеджера.'},403);
-  if(!proposalCountries[body.country]||!body.fields||typeof body.fields!=='object')return json({ok:false},400);
+  if(!Object.hasOwn(proposalCountries,body.country)||!body.fields||typeof body.fields!=='object')return json({ok:false},400);
   const fields={view:'client'};
   for(const key of ['m','y','t','mi','e','d','u','p','mgr'])fields[key]=clean(body.fields[key],key==='u'?2000:250);
   const price=Number(fields.p.replace(/[^\d.,]/g,'').replace(',','.'));
