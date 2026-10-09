@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
-Disallow: /kp.html
-Disallow: /korea-kp.html
-Disallow: /china-kp.html
-Disallow: /japan-kp.html
+# Proposal pages contain noindex; allow crawling so robots can see it.
 Disallow: /korea-generator.html
 Sitemap: https://xn--80aea1cljr.xn--p1ai/sitemap.xml
