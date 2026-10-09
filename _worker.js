@@ -1,3 +1,75 @@
+const proposalCountries = {'Корея':'korea','Китай':'china','Япония':'japan'};
+const proposalManagers = ['alexey','ivan','nadezhda'];
+
+// Private, durable storage. IDs are unguessable; records are immutable.
+export class ProposalStore {
+  constructor(ctx) { this.ctx = ctx; }
+  async fetch(request) {
+    const url = new URL(request.url);
+    if(request.method==='GET') {
+      const record=await this.ctx.storage.get('kp:'+url.pathname.slice(1));
+      return record?json(record):json({ok:false},404);
+    }
+    if(request.method!=='POST')return json({ok:false},405);
+    const {record,ip}=await request.json();
+    return this.ctx.blockConcurrencyWhile(async()=>{
+      const hour=Math.floor(Date.now()/3600000),day=Math.floor(Date.now()/86400000);
+      const quota=await this.ctx.storage.get('quota')||{day,total:0,ips:{}};
+      if(quota.day!==day){quota.day=day;quota.total=0;quota.ips={};}
+      const prior=quota.ips[ip],count=prior&&prior.hour===hour?prior.count:0;
+      if(count>=30||quota.total>=500)return json({ok:false,message:'Слишком много сохранений. Попробуйте позже.'},429);
+      quota.ips[ip]={hour,count:count+1};quota.total++;
+      const bytes=crypto.getRandomValues(new Uint8Array(16));
+      const id=btoa(String.fromCharCode(...bytes)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+      await this.ctx.storage.put({'quota':quota,['kp:'+id]:record});
+      return json({ok:true,id});
+    });
+  }
+}
+
+async function createProposal(request,env){
+  if(request.method!=='POST')return json({ok:false},405);
+  if(request.headers.get('origin')&&request.headers.get('origin')!==new URL(request.url).origin)return json({ok:false},403);
+  if(!env.PROPOSALS)return json({ok:false,message:'Сохранение КП ещё не настроено.'},503);
+  const text=await request.text();if(text.length>10000)return json({ok:false},413);
+  let body;try{body=JSON.parse(text);}catch(_){return json({ok:false},400);}
+  if(body.pin!==String(env.PROPOSAL_MANAGER_PIN||'8888'))return json({ok:false,message:'Неверный PIN менеджера.'},403);
+  if(!proposalCountries[body.country]||!body.fields||typeof body.fields!=='object')return json({ok:false},400);
+  const fields={view:'client'};
+  for(const key of ['m','y','t','mi','e','d','u','p','mgr'])fields[key]=clean(body.fields[key],key==='u'?2000:250);
+  const price=Number(fields.p.replace(/[^\d.,]/g,'').replace(',','.'));
+  if(!fields.m||!Number.isFinite(price)||price<=0||!proposalManagers.includes(fields.mgr))return json({ok:false,message:'Заполните модель, стоимость и менеджера.'},400);
+  if(fields.u){try{const u=new URL(fields.u);if(!['https:','http:'].includes(u.protocol)||!u.hostname.includes('.'))throw Error();fields.u=u.href;}catch(_){return json({ok:false,message:'Проверьте ссылку на автомобиль.'},400);}}
+  fields.p=String(price);
+  const ip=request.headers.get('CF-Connecting-IP')||'unknown';
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(ip));
+  const hash=Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+  const store=env.PROPOSALS.get(env.PROPOSALS.idFromName('proposals'));
+  return store.fetch('https://store/',{method:'POST',body:JSON.stringify({record:{country:body.country,fields,createdAt:new Date().toISOString()},ip:hash})});
+}
+
+async function viewProposal(request,env){
+  if(!['GET','HEAD'].includes(request.method))return json({ok:false},405);
+  const id=new URL(request.url).pathname.slice('/offer/'.length);
+  if(!/^[A-Za-z0-9_-]{22}$/.test(id)||!env.PROPOSALS)return new Response('Предложение не найдено',{status:404});
+  const store=env.PROPOSALS.get(env.PROPOSALS.idFromName('proposals'));
+  const response=await store.fetch('https://store/'+id);
+  if(!response.ok)return new Response('Предложение не найдено',{status:404,headers:{'X-Robots-Tag':'noindex, nofollow'}});
+  const record=await response.json();
+  const assetUrl=new URL('/'+proposalCountries[record.country]+'-kp.html',request.url);
+  const asset=await env.ASSETS.fetch(new Request(assetUrl));
+  if(!asset.ok)return asset;
+  const query=JSON.stringify(new URLSearchParams(record.fields).toString()).replace(/</g,'\\u003c');
+  const title='КП: '+record.fields.m+' — АВТО В РФ';
+  const safeTitle=escapeHtml(title).replace(/"/g,'&quot;');
+  const description=escapeHtml(record.country+' · Стоимость под ключ: '+new Intl.NumberFormat('ru-RU').format(Number(record.fields.p))+' ₽').replace(/"/g,'&quot;');
+  let html=await asset.text();
+  html=html.replace('<head>','<head><script>window.PROPOSAL_QUERY='+query+';</script><meta property="og:title" content="'+safeTitle+'"><meta property="og:description" content="'+description+'"><meta property="og:type" content="website">');
+  html=html.replace(/<title>.*?<\/title>/, '<title>'+safeTitle+'</title>');
+  const headers=new Headers(asset.headers);headers.delete('etag');headers.delete('content-length');headers.set('content-type','text/html; charset=UTF-8');headers.set('cache-control','no-store');headers.set('X-Robots-Tag','noindex, nofollow');
+  return new Response(request.method==='HEAD'?null:html,{headers});
+}
+
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -71,6 +143,9 @@ async function importEncar(request){
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if(url.pathname === "/api/proposals")return createProposal(request,env);
+    if(url.pathname.startsWith("/offer/"))return viewProposal(request,env);
+
 
     if(url.pathname==="/api/lead/status"&&request.method==="GET")return json({ready:!!(env.TELEGRAM_BOT_TOKEN&&env.TELEGRAM_CHAT_ID)});
 
@@ -158,5 +233,6 @@ export default {
     return env.ASSETS.fetch(request);
   }
 };
+
 
 

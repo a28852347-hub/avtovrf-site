@@ -6,7 +6,24 @@
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": [
-      "/api/*"
+      "/api/*",
+      "/offer/*"
     ]
-  }
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PROPOSALS",
+        "class_name": "ProposalStore"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "proposals-v1",
+      "new_sqlite_classes": [
+        "ProposalStore"
+      ]
+    }
+  ]
 }
