@@ -141,9 +141,44 @@ async function importEncar(request){
   finally{clearTimeout(timer);}
 }
 
+
+const COMPANY_VIDEOS=new Set(['FJKfehueKXw','U_38i4B4fc0','KuiRU86EgpQ']);
+async function videoCover(request){
+  const id=new URL(request.url).pathname.slice('/api/video-cover/'.length);
+  if(!COMPANY_VIDEOS.has(id))return new Response('Not found',{status:404});
+  if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405});
+  const key=new Request(new URL('/api/video-cover/'+id,request.url).href);
+  const cached=await caches.default.match(key);
+  if(cached)return request.method==='HEAD'?new Response(null,cached):cached;
+  const candidates=[];
+  try{
+    const page=await fetch('https://www.youtube.com/watch?v='+id,{signal:AbortSignal.timeout(8000),headers:{'accept-language':'ru'}});
+    const html=await page.text();
+    const match=html.match(/<meta\s+property="og:image"\s+content="([^"]+)"/);
+    if(match){const u=new URL(match[1].replace(/&amp;/g,'&'));if(u.protocol==='https:'&&u.hostname==='i.ytimg.com'&&u.pathname.startsWith('/vi/'+id+'/'))candidates.push(u.href);}
+  }catch(_){}
+  candidates.push('https://i.ytimg.com/vi/'+id+'/maxresdefault.jpg','https://i.ytimg.com/vi/'+id+'/hqdefault.jpg');
+  for(const source of candidates){
+    for(const host of ['i.ytimg.com','img.youtube.com']){
+      try{
+        const url=new URL(source);url.hostname=host;
+        const upstream=await fetch(url.href,{signal:AbortSignal.timeout(5000),cf:{cacheTtl:300}});
+        if(!upstream.ok||!(upstream.headers.get('content-type')||'').startsWith('image/'))continue;
+        const bytes=await upstream.arrayBuffer();
+        if(bytes.byteLength<2000)continue;
+        const response=new Response(bytes,{headers:{'Content-Type':upstream.headers.get('content-type'),'Cache-Control':'public, max-age=300','X-Content-Type-Options':'nosniff'}});
+        await caches.default.put(key,response.clone());
+        return request.method==='HEAD'?new Response(null,response):response;
+      }catch(_){}
+    }
+  }
+  return new Response('Cover temporarily unavailable',{status:502,headers:{'Cache-Control':'no-store'}});
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if(url.pathname.startsWith("/api/video-cover/"))return videoCover(request);
     if(url.pathname === "/api/proposals")return createProposal(request,env);
     if(url.pathname.startsWith("/offer/"))return viewProposal(request,env);
 

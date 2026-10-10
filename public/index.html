@@ -849,9 +849,9 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-siz
 <h3 class="gallery-title reveal">Фотогалерея</h3>
 <div class="gallery reveal"><div class="gallery-item"><img alt="Основатель компании — Недостоев А. А." decoding="async" loading="lazy" src="assets/history-1.jpg"/><div class="gallery-cap"><b>Основатель компании — Недостоев А. А.</b>Основатель компании</div></div><div class="gallery-item"><img alt="Наш офис" decoding="async" loading="lazy" src="assets/history-2.jpg"/><div class="gallery-cap"><b>Наш офис</b>Офис компании «Авто в РФ»</div></div><div class="gallery-item"><img alt="Выгрузка автомобилей" decoding="async" loading="lazy" src="assets/history-3.jpg"/><div class="gallery-cap"><b>Выгрузка автомобилей</b>Рабочий процесс и приём автомобилей</div></div><div class="gallery-item"><img alt="Автомобили на территории «Спец Склад»" decoding="async" loading="lazy" src="assets/history-4.jpg"/><div class="gallery-cap"><b>Автомобили на территории «Спец Склад»</b>Территория и автомобили компании</div></div></div>
 <h3 class="video-title reveal">Видео о компании</h3><div class="video-grid reveal" id="companyVideos">
-<div class="video-item"><div class="video-frame yt-lazy" data-video="FJKfehueKXw"><img alt="Видео компании" loading="lazy" src="https://i.ytimg.com/vi/FJKfehueKXw/hqdefault.jpg?v=20261010" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="FJKfehueKXw" style="display:none"></div></div>
-<div class="video-item"><div class="video-frame yt-lazy" data-video="U_38i4B4fc0"><img alt="Видео компании" loading="lazy" src="https://i.ytimg.com/vi/U_38i4B4fc0/hqdefault.jpg?v=20261010" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="U_38i4B4fc0" style="display:none"></div></div>
-<div class="video-item"><div class="video-frame yt-lazy" data-video="KuiRU86EgpQ"><img alt="Видео компании" loading="lazy" src="https://i.ytimg.com/vi/KuiRU86EgpQ/hqdefault.jpg?v=20261010" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="KuiRU86EgpQ" style="display:none"></div></div>
+<div class="video-item"><div class="video-frame yt-lazy" data-video="FJKfehueKXw"><img alt="Видео компании" loading="lazy" src="/api/video-cover/FJKfehueKXw?v=2" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="FJKfehueKXw" style="display:none"></div></div>
+<div class="video-item"><div class="video-frame yt-lazy" data-video="U_38i4B4fc0"><img alt="Видео компании" loading="lazy" src="/api/video-cover/U_38i4B4fc0?v=2" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="U_38i4B4fc0" style="display:none"></div></div>
+<div class="video-item"><div class="video-frame yt-lazy" data-video="KuiRU86EgpQ"><img alt="Видео компании" loading="lazy" src="/api/video-cover/KuiRU86EgpQ?v=2" style="width:100%;height:100%;object-fit:cover"/><button aria-label="Воспроизвести видео" class="play-btn" type="button">▶</button></div><div class="video-cap yt-title" data-video-title="KuiRU86EgpQ" style="display:none"></div></div>
 </div>
 </div>
 </section>
@@ -1289,15 +1289,15 @@ document.addEventListener('click',function(e){
 </script>
 <script>
 (function(){
-  var coverVersion=Math.floor(Date.now()/3600000);
-  document.querySelectorAll('.yt-lazy[data-video] img').forEach(function(img){var id=img.parentElement.getAttribute('data-video');img.src='https://i.ytimg.com/vi/'+id+'/hqdefault.jpg?v='+coverVersion;});
+  document.querySelectorAll('.yt-lazy[data-video] img').forEach(function(img){
+    img.addEventListener('error',function(){if(img.dataset.coverFallback)return;img.dataset.coverFallback='1';img.src='https://img.youtube.com/vi/'+img.parentElement.getAttribute('data-video')+'/hqdefault.jpg';});
+  });
   document.querySelectorAll('[data-video-title]').forEach(function(el){
     var id=el.getAttribute('data-video-title');
     var u='https://www.youtube.com/oembed?url='+encodeURIComponent('https://www.youtube.com/watch?v='+id)+'&format=json';
     fetch(u).then(function(r){if(!r.ok) throw new Error(); return r.json();}).then(function(d){
       if(d && d.title){el.textContent=d.title;el.style.display='block';}
-      var frame=document.querySelector('.yt-lazy[data-video="'+id+'"]');var img=frame&&frame.querySelector('img');
-      if(img && d && d.thumbnail_url){try{var cover=new URL(d.thumbnail_url);if(cover.protocol==='https:'&&(cover.hostname==='i.ytimg.com'||cover.hostname==='img.youtube.com')){cover.searchParams.set('v',coverVersion);img.src=cover.href;}}catch(_){}}
+
     }).catch(function(){el.style.display='none';});
   });
 })();
